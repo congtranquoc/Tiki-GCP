@@ -1,33 +1,58 @@
 from google.cloud import bigquery
 import os
 
-def load_data_to_bigquery(event, context):
-    bucket = event['bucket']
-    file_name = event['name']
+def import_to_big_query(data, context, dataset='tiki-dataset', table='tiki-products', verbose=True):
+    def vprint(s):
+        if verbose:
+            print(s)
 
-    project_id = "my-project-25072023-393906"
-    dataset_id = "tiki-dataset"
-    table_id = "tiki-products"
+    vprint('Event ID: {}'.format(context.event_id))
+    vprint('Event type: {}'.format(context.event_type))
+    vprint('Importing required modules.')
 
-    client = bigquery.Client(project=project_id)
+    from google.cloud import bigquery
 
-    source_uri = f"gs://{bucket}/{file_name}"
+    vprint('This is the data: {}'.format(data))
 
+    input_bucket_name = data['bucket']
+    source_file = data['name']
+    uri = 'gs://{}/{}'.format(input_bucket_name, source_file)
 
+    vprint('Getting the data from bucket "{}"'.format(
+        uri
+    ))
+    
+    if str(source_file).lower().endswith('.csv') or \
+            str(source_file).lower().endswith('.avro'):
 
-    # Tạo job load dữ liệu từ GCS vào BigQuery
-    job_config = bigquery.LoadJobConfig(
-        autodetect=True,
-        source_format=bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
-    )
+        client = bigquery.Client()
+        dataset_ref = client.dataset(dataset)
 
-    table_ref = client.dataset(dataset_id).table(table_id)
-    job = client.load_table_from_uri(
-        source_uri, table_ref, job_config=job_config
-    )
+        job_config = bigquery.LoadJobConfig()
+        job_config.autodetect = True
+        job_config.schema_update_options = [
+            bigquery.SchemaUpdateOption.ALLOW_FIELD_ADDITION
+        ]
 
-    job.result()
-    )
+        if str(source_file).lower().endswith('.csv'):
+            job_config.source_format = bigquery.SourceFormat.CSV
+        else:
+            job_config.source_format = bigquery.SourceFormat.AVRO
 
-    job.result()
-    print(f"Data loaded from {source_uri} to BigQuery table {table_id}")
+        job_config.write_disposition = bigquery.WriteDisposition.WRITE_APPEND
+
+        load_job = client.load_table_from_uri(
+            uri,
+            dataset_ref.table(table),
+            job_config=job_config)
+
+        vprint('Starting job {}'.format(load_job.job_id))
+
+        load_job.result()
+        vprint('Job finished.')
+
+        destination_table = client.get_table(dataset_ref.table(table))
+        vprint('Loaded {} rows.'.format(destination_table.num_rows))
+
+        vprint('File imported successfully.')
+    else:
