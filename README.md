@@ -105,26 +105,83 @@ The main objective of this project is to seamlessly synchronize Tiki's entire pr
      ```bash
      mongorestore --db=tiki-products --collection=products /home/username/tiki-products.bson
      ```
-     - After restore data to mongodb, We trying to import data from db and upload to Bucket
-     ```bash
-        #export db to json
-        mongoexport --collection=products --db=tiki-products --out=export-db.json
-
-        #Remove the object id since Bigquery do not accect special characters.
-        jq 'del(._id)' export-db.json > tiki_without_id.json
-
-        #Upload json file to bucket which has been created.(Must to login)
-        gcloud compute scp /home/username/tiki_without_id.json gs://tiki-bucket
-     ```
-
 3. **Creating Data Backup**:
    - Perform a complete synchronization of all products from MongoDB to Google Cloud Storage as a backup.
+   - After restore data to mongodb, We trying to import data from db and upload to Bucket
+   ```bash
+     #export db to json
+     mongoexport --collection=products --db=tiki-products --out=export-db.json
+   
+     #Remove the object id since Bigquery do not accect special characters.
+     jq 'del(._id)' export-db.json > tiki_without_id.json
+   
+     #Upload json file to bucket which has been created.(Must to login)
+     gcloud compute scp /home/username/tiki_without_id.json gs://tiki-bucket
+   ```
 
 4. **Designing BigQuery Data Warehouse**:
    - Architect the schema and structure within BigQuery to accommodate Tiki's product dataset.
+   ```bash
+   #Create dataset
+   bq --location=asia-east2-a mk -d \
+       --default_table_expiration 3600 \
+       --description "This is tiki dataset." \
+       tiki-dataset
+   
+   #create table	
+   bq mk \
+   	 --table \
+   	 --expiration 3600 \
+   	 --description "This is tiki products" \
+   	 --label organization:development \
+   	 tiki-dataset.tiki-products
+   
+   #Load data from bucket to bigquery 
+   bq load \
+   	--source_format=json \
+   	tiki-dataset.tiki-products \
+   	gs://tiki-bucket/tiki_without_id.json \
+   	/home/username//myschema 
+   ```
 
 5. **Developing Data Mart**:
    - Construct a data mart focused on sellers and their products, intended for the Data Analysis (DA) team.
+   ```sql
+   CREATE TABLE `my-project-25072023-393906.tiki.SellerProductDataMart` AS
+   SELECT
+       s.id AS seller_id,
+       s.name AS seller_name,
+       s.is_best_store AS seller_best,
+       s.link AS seller_link,
+       s.is_offline_installment_supported AS seller_offline_installment_supported,
+       ARRAY_AGG(
+           STRUCT(
+               p.id AS product_id,
+               p.name AS product_name,
+               p.price,
+               p.type,
+               p.url_key,
+               p.author_name,
+               p.favourite_count,
+               p.order_count,
+               p.discount_rate,
+               p.discount,
+               p.brand_name
+           )
+       ) AS products
+   FROM
+       `my-project-25072023-393906.tiki.products` AS p
+   LEFT JOIN
+       UNNEST([current_seller]) AS s
+   ON
+       p.seller_id = s.id
+   GROUP BY
+       seller_id,
+       seller_name,
+       seller_best,
+       seller_link,
+       seller_offline_installment_supported
+   ```
 
 6. **Connecting to Data Studio**:
    - Establish a connection between BigQuery and Data Studio.
