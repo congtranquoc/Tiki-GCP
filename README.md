@@ -22,16 +22,16 @@ Develop a data mart that focuses on sellers and the products they are selling. T
 
 5. Connecting to Data Studio:
 
-  i. Establish a connection between BigQuery and Data Studio.
-  ii. Create a basic dashboard to showcase the following insights:
+  1. Establish a connection between BigQuery and Data Studio.
+  2. Create a basic dashboard to showcase the following insights:
   
-    - Total number of products sold across major categories.
+    1. Total number of products sold across major categories.
     
-    - Distribution of products from Chinese brands across major categories.
+    2. Distribution of products from Chinese brands across major categories.
     
-    - Correlation between product ratings and prices.
+    3. Correlation between product ratings and prices.
     
-    - Top 10 sellers with the highest number of products listed on Tiki, along with the quantity of products for each seller.
+    4. Top 10 sellers with the highest number of products listed on Tiki, along with the quantity of products for each seller.
 
 ## Implementation Steps
 1. Set up a Compute Engine instance with MongoDB installed.
