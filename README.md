@@ -91,7 +91,31 @@ The main objective of this project is to seamlessly synchronize Tiki's entire pr
          ```bash
          sudo systemctl enable mongod
          ```
+      - Install MongoDB Database Tools.
+        ```bash
+        wget https://fastdl.mongodb.org/tools/db/mongodb-database-tools-ubuntu1804-x86_64-100.7.3.deb
+        sudo apt install ./mongodb-database-tools-*-100.7.3.deb
+        ```
    - Restore Tiki's product data from a local MongoDB instance to the MongoDB on the virtual machine.
+     - Transfer json from local to VM via Gcloud
+     ```bash
+     gcloud compute scp tiki-products.bson quoccong-workspace@tiki-instance:/home/username --zone=asia-east2-a
+     ```
+     - Restore data to mongodb
+     ```bash
+     mongorestore --db=tiki-products --collection=products /home/username/tiki-products.bson
+     ```
+     - After restore data to mongodb, We trying to import data from db and upload to Bucket
+     ```bash
+        #export db to json
+        mongoexport --collection=products --db=tiki-products --out=export-db.json
+
+        #Remove the object id since Bigquery do not accect special characters.
+        jq 'del(._id)' export-db.json > tiki_without_id.json
+
+        #Upload json file to bucket which has been created.(Must to login)
+        gcloud compute scp /home/username/tiki_without_id.json gs://tiki-bucket
+     ```
 
 3. **Creating Data Backup**:
    - Perform a complete synchronization of all products from MongoDB to Google Cloud Storage as a backup.
