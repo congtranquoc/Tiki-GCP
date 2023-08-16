@@ -32,23 +32,23 @@ The main objective of this project is to seamlessly synchronize Tiki's entire pr
 Follow these steps to successfully execute the project:
 
 1. **Setting up Compute Engine and MongoDB**:
-   - Configure a Compute Engine instance and install MongoDB.
+   Configure a Compute Engine instance and install MongoDB.
    
 2. **Restoring Data**:
-   - Migrate Tiki's product data from a local MongoDB instance to the MongoDB on the Compute Engine VM.
+   Migrate Tiki's product data from a local MongoDB instance to the MongoDB on the Compute Engine VM.
 
 3. **Data Synchronization**:
-   - Synchronize data to Google Cloud Storage for robust backup.
+   Synchronize data to Google Cloud Storage for robust backup.
 
 4. **Designing BigQuery Schema**:
-   - Plan and implement an effective schema in BigQuery for Tiki's product data.
+   Plan and implement an effective schema in BigQuery for Tiki's product data.
 
 5. **Developing Data Mart**:
-   - Build a specialized data mart centered around sellers and their products.
+   Build a specialized data mart centered around sellers and their products.
 
 6. **Creating Data Studio Dashboard**:
-   - Establish a seamless connection between BigQuery and Data Studio.
-   - Design a dashboard with insightful visualizations.
+   Establish a seamless connection between BigQuery and Data Studio.
+   Design a dashboard with insightful visualizations.
 
 For detailed instructions and code examples, refer to the provided code files.
 
