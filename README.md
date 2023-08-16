@@ -223,6 +223,7 @@ The main objective of this project is to seamlessly synchronize Tiki's entire pr
          GROUP BY
              rc.root_category_id;
          ```
+       - Data Studio:
        ![alt](https://github.com/congtranquoc/Tiki-GCP/blob/57fd9e6fb04f062370eac0b8cf2a5f9adb577cb3/images/top-categories.PNG)
   
      - Total china products has been sold:
@@ -265,6 +266,7 @@ The main objective of this project is to seamlessly synchronize Tiki's entire pr
              rc.root_category_id,
              rc.category_name;
          ```
+       - Data Studio:
        ![alt](https://github.com/congtranquoc/Tiki-GCP/blob/2c243b39e5603ce5443a6ea5f3b6b3df69a3a08f/images/top-china-products.PNG)
             
      - Distribution of products from Chinese brands across categories.
@@ -304,6 +306,7 @@ The main objective of this project is to seamlessly synchronize Tiki's entire pr
          ORDER BY
              rc.category_name;
          ```
+       - Data Studio:
        ![alt](https://github.com/congtranquoc/Tiki-GCP/blob/2c243b39e5603ce5443a6ea5f3b6b3df69a3a08f/images/distribution.PNG)
        
      - Correlation between product ratings and prices.
@@ -345,6 +348,7 @@ The main objective of this project is to seamlessly synchronize Tiki's entire pr
              seller_link,
              seller_offline_installment_supported
          ```
+       - Data Studio:
        ![alt](https://github.com/congtranquoc/Tiki-GCP/blob/2c243b39e5603ce5443a6ea5f3b6b3df69a3a08f/images/top-sellers.PNG)
 
 
