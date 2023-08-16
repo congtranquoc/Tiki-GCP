@@ -23,6 +23,7 @@ The main objective of this project is to seamlessly synchronize Tiki's entire pr
    - Establish a connection between BigQuery and Data Studio.
    - Create a dashboard displaying key insights:
      - Total products sold across major categories.
+       ![alt](https://github.com/congtranquoc/Tiki-GCP/blob/57fd9e6fb04f062370eac0b8cf2a5f9adb577cb3/images/top-categories.PNG)
      - Distribution of products from Chinese brands across categories.
      - Correlation between product ratings and prices.
      - Top 10 sellers and their listed products' quantities.
