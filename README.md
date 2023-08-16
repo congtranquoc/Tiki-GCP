@@ -170,7 +170,7 @@ The main objective of this project is to seamlessly synchronize Tiki's entire pr
            )
        ) AS products
    FROM
-       `my-project-25072023-393906.tiki.products` AS p
+       `my-project-25072023-393906.tiki-dataset.tiki-products` AS p
    LEFT JOIN
        UNNEST([current_seller]) AS s
    ON
@@ -187,16 +187,164 @@ The main objective of this project is to seamlessly synchronize Tiki's entire pr
    - Establish a connection between BigQuery and Data Studio.
    - Create a dashboard displaying key insights:
      - Total products sold across major categories.
+       - `SQL`:
+         ```bash
+         WITH RootCategory AS (
+             SELECT
+                 DISTINCT breadcrumbs[SAFE_OFFSET(0)].category_id AS root_category_id
+             FROM
+                 `my-project-25072023-393906.tiki.products`
+             WHERE
+                 breadcrumbs[SAFE_OFFSET(0)] IS NOT NULL
+         )
+         SELECT
+             rc.root_category_id,
+             ARRAY_AGG(
+                 STRUCT(
+                     p.id,
+                     p.name AS product_name,
+                     p.price,
+                     p.type,
+                     p.url_key,
+                     p.author_name,
+                     p.favourite_count,
+                     p.order_count,
+                     p.discount_rate,
+                     p.discount,
+                     p.brand_name
+                 )
+             ) AS products
+         FROM
+             `my-project-25072023-393906.tiki-dataset.tiki.products` AS p
+         JOIN
+             RootCategory AS rc
+         ON
+             breadcrumbs[SAFE_OFFSET(0)].category_id = rc.root_category_id
+         GROUP BY
+             rc.root_category_id;
+         ```
        ![alt](https://github.com/congtranquoc/Tiki-GCP/blob/57fd9e6fb04f062370eac0b8cf2a5f9adb577cb3/images/top-categories.PNG)
   
      - Total china products has been sold:
+       - `SQL`:
+         ```bash
+         WITH RootCategory AS (
+             SELECT
+                 DISTINCT breadcrumbs[SAFE_OFFSET(0)].category_id AS root_category_id,
+                 breadcrumbs[SAFE_OFFSET(0)].name AS category_name
+             FROM
+                 `my-project-25072023-393906.tiki-dataset.tiki.products`
+             WHERE
+                 breadcrumbs[SAFE_OFFSET(0)] IS NOT NULL
+         ),
+         ProductsFromChina AS (
+             SELECT
+                 DISTINCT p.id AS product_id
+             FROM
+                 `my-project-25072023-393906.tiki.products` AS p,
+                 UNNEST(p.specifications) AS spec,
+                 UNNEST(spec.attributes) AS attr
+             WHERE
+                 attr.code = 'origin' AND attr.value like '%Trung Quốc%'
+         )
+         SELECT
+             rc.root_category_id,
+             rc.category_name,
+             SUM(p.quantity_sold.value) AS total_quantity_sold
+         FROM
+             `my-project-25072023-393906.tiki-dataset.tiki.products` AS p
+         JOIN
+             RootCategory AS rc
+         ON
+             breadcrumbs[SAFE_OFFSET(0)].category_id = rc.root_category_id
+         JOIN
+             ProductsFromChina AS pc
+         ON
+             p.id = pc.product_id
+         GROUP BY
+             rc.root_category_id,
+             rc.category_name;
+         ```
        ![alt](https://github.com/congtranquoc/Tiki-GCP/blob/2c243b39e5603ce5443a6ea5f3b6b3df69a3a08f/images/top-china-products.PNG)
             
      - Distribution of products from Chinese brands across categories.
+       - `SQL`:
+         ```bash
+         WITH ChinaProducts AS (
+             SELECT
+                 p.breadcrumbs[SAFE_OFFSET(0)].category_id AS root_category_id,
+                 CASE WHEN attr.value = 'Trung Quốc' THEN 1 ELSE 0 END AS is_china_product
+             FROM
+                 `my-project-25072023-393906.tiki-dataset.tiki.products` AS p,
+                 UNNEST(p.specifications) AS spec,
+                 UNNEST(spec.attributes) AS attr
+             WHERE
+                 attr.code = 'origin'
+         ),
+         RootCategory AS (
+             SELECT
+                 DISTINCT breadcrumbs[SAFE_OFFSET(0)].category_id AS root_category_id,
+                 breadcrumbs[SAFE_OFFSET(0)].name AS category_name
+             FROM
+                 `my-project-25072023-393906.tiki-dataset.tiki-products`
+             WHERE
+                 breadcrumbs[SAFE_OFFSET(0)] IS NOT NULL
+         )
+         SELECT
+             rc.category_name,
+             SUM(cp.is_china_product) / COUNT(*) * 100 AS china_product_percentage
+         FROM
+             RootCategory AS rc
+         JOIN
+             ChinaProducts AS cp
+         ON
+             rc.root_category_id = cp.root_category_id
+         GROUP BY
+             rc.category_name
+         ORDER BY
+             rc.category_name;
+         ```
        ![alt](https://github.com/congtranquoc/Tiki-GCP/blob/2c243b39e5603ce5443a6ea5f3b6b3df69a3a08f/images/distribution.PNG)
        
      - Correlation between product ratings and prices.
      - Top 10 sellers and their listed products' quantities.
+       - `SQL`:
+         ```bash
+         CREATE TABLE `my-project-25072023-393906.tiki-dataset.SellerProductDataMart` AS
+         SELECT
+             s.id AS seller_id,
+             s.name AS seller_name,
+             s.is_best_store AS seller_best,
+             s.link AS seller_link,
+             s.is_offline_installment_supported AS seller_offline_installment_supported,
+             ARRAY_AGG(
+                 STRUCT(
+                     p.id AS product_id,
+                     p.name AS product_name,
+                     p.price,
+                     p.type,
+                     p.url_key,
+                     p.author_name,
+                     p.favourite_count,
+                     p.order_count,
+                     p.discount_rate,
+                     p.discount,
+                     p.brand_name
+                 )
+             ) AS products
+         FROM
+             `my-project-25072023-393906.tiki-dataset.tiki-products` AS p
+         LEFT JOIN
+             UNNEST([current_seller]) AS s
+         ON
+             p.seller_id = s.id
+         GROUP BY
+             seller_id,
+             seller_name,
+             seller_best,
+             seller_link,
+             seller_offline_installment_supported
+         ```
        ![alt](https://github.com/congtranquoc/Tiki-GCP/blob/2c243b39e5603ce5443a6ea5f3b6b3df69a3a08f/images/top-sellers.PNG)
 
 
