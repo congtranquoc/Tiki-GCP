@@ -15,7 +15,8 @@ The main objective of this project is to seamlessly synchronize Tiki's entire pr
     --boot-disk-size=100GB \
     --machine-type=e2-medium \
     --tags=http-server,https-server,mongodb-server
-
+   ```
+   ```bash
       # firewall-rules HTTP
       gcloud compute firewall-rules create allow-http \
           --direction=INGRESS \
@@ -25,7 +26,8 @@ The main objective of this project is to seamlessly synchronize Tiki's entire pr
           --rules=tcp:80 \
           --source-ranges=0.0.0.0/0 \
           --target-tags=http-server
-      
+   ```
+   ```bash
       # firewall-rules HTTPs
       gcloud compute firewall-rules create allow-https \
           --direction=INGRESS \
@@ -35,7 +37,8 @@ The main objective of this project is to seamlessly synchronize Tiki's entire pr
           --rules=tcp:443 \
           --source-ranges=0.0.0.0/0 \
           --target-tags=https-server
-      
+   ```
+   ```bash
       # firewall-rules Mongodb
       gcloud compute firewall-rules create allow-mongodb \
           --direction=INGRESS \
@@ -48,16 +51,16 @@ The main objective of this project is to seamlessly synchronize Tiki's entire pr
      ```
    - Restore Tiki's product data from a local MongoDB instance to the MongoDB on the virtual machine.
 
-2. **Creating Data Backup**:
+3. **Creating Data Backup**:
    - Perform a complete synchronization of all products from MongoDB to Google Cloud Storage as a backup.
 
-3. **Designing BigQuery Data Warehouse**:
+4. **Designing BigQuery Data Warehouse**:
    - Architect the schema and structure within BigQuery to accommodate Tiki's product dataset.
 
-4. **Developing Data Mart**:
+5. **Developing Data Mart**:
    - Construct a data mart focused on sellers and their products, intended for the Data Analysis (DA) team.
 
-5. **Connecting to Data Studio**:
+6. **Connecting to Data Studio**:
    - Establish a connection between BigQuery and Data Studio.
    - Create a dashboard displaying key insights:
      - Total products sold across major categories.
