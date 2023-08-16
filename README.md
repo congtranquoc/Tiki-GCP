@@ -49,6 +49,48 @@ The main objective of this project is to seamlessly synchronize Tiki's entire pr
           --source-ranges=0.0.0.0/0 \
           --target-tags=mongodb-server
      ```
+
+   - Execute compute
+   ```bash
+      gcloud compute ssh tiki-instance --zone=asia-east2-a
+   ```
+   - Install mongodb to VM:
+       - Install and Update the `gnupg` utility.
+         ```bash
+            sudo apt-get install gnupg
+         ```
+       - Import the public MongoDB GPG signing key.
+         ```bash
+         wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
+         ```
+       - Add details about the official MongoDB repository to the list of Ubuntu packages.
+         ```bash
+         echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+         ```
+       - Update the list of packages using `apt`.
+         ```bash
+         sudo apt-get update
+         ```
+       - Install the latest release of MongoDB.
+         ```bash
+         sudo apt-get install -y mongodb-org
+         ```
+       - Reload the systemctl daemon.
+         ```bash
+         sudo systemctl daemon-reload
+         ```
+       - Start the mongod process using `systemctl start`.
+         ```bash
+         sudo systemctl start mongod
+         ```
+       - Use `systemctl status` to ensure the MongoDB service is active.
+         ```bash
+         sudo systemctl status mongod
+         ```
+       - To configure Ubuntu to launch MongoDB at system boot time, enter the following command.
+         ```bash
+         sudo systemctl enable mongod
+         ```
    - Restore Tiki's product data from a local MongoDB instance to the MongoDB on the virtual machine.
 
 3. **Creating Data Backup**:
