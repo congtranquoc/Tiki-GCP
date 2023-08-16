@@ -22,8 +22,8 @@ Develop a data mart that focuses on sellers and the products they are selling. T
 
 5. Connecting to Data Studio:
 
-  ii. Establish a connection between BigQuery and Data Studio.
-  iii. Create a basic dashboard to showcase the following insights:
+  i. Establish a connection between BigQuery and Data Studio.
+  ii. Create a basic dashboard to showcase the following insights:
   
     - Total number of products sold across major categories.
     
