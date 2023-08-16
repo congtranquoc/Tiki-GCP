@@ -188,7 +188,7 @@ The main objective of this project is to seamlessly synchronize Tiki's entire pr
    - Create a dashboard displaying key insights:
      - Total products sold across major categories.
        - `SQL`:
-         ```bash
+         ```sql
          WITH RootCategory AS (
              SELECT
                  DISTINCT breadcrumbs[SAFE_OFFSET(0)].category_id AS root_category_id
@@ -227,7 +227,7 @@ The main objective of this project is to seamlessly synchronize Tiki's entire pr
   
      - Total china products has been sold:
        - `SQL`:
-         ```bash
+         ```sql
          WITH RootCategory AS (
              SELECT
                  DISTINCT breadcrumbs[SAFE_OFFSET(0)].category_id AS root_category_id,
@@ -269,7 +269,7 @@ The main objective of this project is to seamlessly synchronize Tiki's entire pr
             
      - Distribution of products from Chinese brands across categories.
        - `SQL`:
-         ```bash
+         ```sql
          WITH ChinaProducts AS (
              SELECT
                  p.breadcrumbs[SAFE_OFFSET(0)].category_id AS root_category_id,
@@ -309,7 +309,7 @@ The main objective of this project is to seamlessly synchronize Tiki's entire pr
      - Correlation between product ratings and prices.
      - Top 10 sellers and their listed products' quantities.
        - `SQL`:
-         ```bash
+         ```sql
          CREATE TABLE `my-project-25072023-393906.tiki-dataset.SellerProductDataMart` AS
          SELECT
              s.id AS seller_id,
