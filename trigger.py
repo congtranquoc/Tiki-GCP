@@ -14,15 +14,11 @@ def load_data_to_bigquery(event, context):
     source_uri = f"gs://{bucket}/{file_name}"
 
 
-    schema_path = "/tmp/schema.json"
-    with open(schema_path, "r") as schema_file:
-        schema = schema_file.read()
 
     # Tạo job load dữ liệu từ GCS vào BigQuery
     job_config = bigquery.LoadJobConfig(
         autodetect=True,
-        source_format=bigquery.SourceFormat.NEWLINE_DELIMITED_JSON,
-        schema=schema,
+        source_format=bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
     )
 
     table_ref = client.dataset(dataset_id).table(table_id)
