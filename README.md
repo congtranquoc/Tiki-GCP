@@ -11,9 +11,11 @@ Restore the complete Tiki product data from a local MongoDB instance to the Mong
 2. Creating Data Backup:
 
 Perform a full synchronization of all products stored in the MongoDB database to Google Cloud Storage as a backup.
+
 3. Designing Data Warehouse – BigQuery:
 
 Architect the structure and schema in BigQuery to accommodate the entire Tiki product dataset.
+
 4. Creating Data Mart:
 
 Develop a data mart that focuses on sellers and the products they are selling. This data mart will be utilized by the Data Analysis (DA) team.
