@@ -13,13 +13,13 @@ Architect the structure and schema in BigQuery to accommodate the entire Tiki pr
 Develop a data mart that focuses on sellers and the products they are selling. This data mart will be utilized by the Data Analysis (DA) team.
 5. Connecting to Data Studio:
   
-  1. Establish a connection between BigQuery and Data Studio.
-  2. Create a basic dashboard to showcase the following insights:
+  5.1. Establish a connection between BigQuery and Data Studio.
+  5.2 Create a basic dashboard to showcase the following insights:
      
-    1. Total number of products sold across major categories.
-    2. Distribution of products from Chinese brands across major categories.
-    3. Correlation between product ratings and prices.
-    4. Top 10 sellers with the highest number of products listed on Tiki, along with the quantity of products for each seller.
+    5.2.1 Total number of products sold across major categories.
+    5.2.2 Distribution of products from Chinese brands across major categories.
+    5.2.3 Correlation between product ratings and prices.
+    5.2.4 Top 10 sellers with the highest number of products listed on Tiki, along with the quantity of products for each seller.
 ## Implementation Steps
 1. Set up a Compute Engine instance with MongoDB installed.
 2. Restore Tiki product data from a local MongoDB instance to the MongoDB on the VM.
