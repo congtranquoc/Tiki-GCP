@@ -8,6 +8,44 @@ The main objective of this project is to seamlessly synchronize Tiki's entire pr
 
 1. **Setting up Compute Engine and MongoDB**:
    - Create a Compute Engine instance and install MongoDB.
+     ```gcloud
+     gcloud compute instances create tiki-instance \
+    --zone=asia-east2-a \
+    --image-family=ubuntu-2004-lts \
+    --boot-disk-size=100GB \
+    --machine-type=e2-medium \
+    --tags=http-server,https-server,mongodb-server
+
+      # firewall-rules HTTP
+      gcloud compute firewall-rules create allow-http \
+          --direction=INGRESS \
+          --priority=1000 \
+          --network=default \
+          --action=ALLOW \
+          --rules=tcp:80 \
+          --source-ranges=0.0.0.0/0 \
+          --target-tags=http-server
+      
+      # firewall-rules HTTPs
+      gcloud compute firewall-rules create allow-https \
+          --direction=INGRESS \
+          --priority=1000 \
+          --network=default \
+          --action=ALLOW \
+          --rules=tcp:443 \
+          --source-ranges=0.0.0.0/0 \
+          --target-tags=https-server
+      
+      # firewall-rules Mongodb
+      gcloud compute firewall-rules create allow-mongodb \
+          --direction=INGRESS \
+          --priority=1000 \
+          --network=default \
+          --action=ALLOW \
+          --rules=tcp:27017 \
+          --source-ranges=0.0.0.0/0 \
+          --target-tags=mongodb-server
+     ```
    - Restore Tiki's product data from a local MongoDB instance to the MongoDB on the virtual machine.
 
 2. **Creating Data Backup**:
