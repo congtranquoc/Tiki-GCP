@@ -12,8 +12,10 @@ Architect the structure and schema in BigQuery to accommodate the entire Tiki pr
 4. Creating Data Mart:
 Develop a data mart that focuses on sellers and the products they are selling. This data mart will be utilized by the Data Analysis (DA) team.
 5. Connecting to Data Studio:
+  
   1. Establish a connection between BigQuery and Data Studio.
   2. Create a basic dashboard to showcase the following insights:
+     
     1. Total number of products sold across major categories.
     2. Distribution of products from Chinese brands across major categories.
     3. Correlation between product ratings and prices.
