@@ -1,34 +1,57 @@
-# Tiki Google cloud platform
-This repository contains the implementation details and step to synchronize all Tiki product data to Google cloud platform's Data Warehouse Bigquery.
-## Description
-The primary goal of this project is to synchronize the entire Tiki product data to a Data Warehouse, specifically Google Cloud’s BigQuery. The project involves the following steps:
-1. Setting up Compute Engine and MongoDB:
-Create a Compute Engine instance and install MongoDB.
-Restore the complete Tiki product data from a local MongoDB instance to the MongoDB instance on the VM.
-2. Creating Data Backup:
-Perform a full synchronization of all products stored in the MongoDB database to Google Cloud Storage as a backup.
-3. Designing Data Warehouse – BigQuery:
-Architect the structure and schema in BigQuery to accommodate the entire Tiki product dataset.
-4. Creating Data Mart:
-Develop a data mart that focuses on sellers and the products they are selling. This data mart will be utilized by the Data Analysis (DA) team.
-5. Connecting to Data Studio:
-  
-  5.1. Establish a connection between BigQuery and Data Studio.
-  5.2 Create a basic dashboard to showcase the following insights:
-     
-    5.2.1 Total number of products sold across major categories.
-    5.2.2 Distribution of products from Chinese brands across major categories.
-    5.2.3 Correlation between product ratings and prices.
-    5.2.4 Top 10 sellers with the highest number of products listed on Tiki, along with the quantity of products for each seller.
+# Tiki - Google Cloud Platform Data Synchronization
+
+> This repository serves as a comprehensive guide for synchronizing Tiki's product data with Google Cloud Platform's Data Warehouse using BigQuery.
+
+## Overview
+
+The main objective of this project is to seamlessly synchronize Tiki's entire product data into Google Cloud's BigQuery, enabling effective data analysis and insights. The project involves several key steps:
+
+1. **Setting up Compute Engine and MongoDB**:
+   - Create a Compute Engine instance and install MongoDB.
+   - Restore Tiki's product data from a local MongoDB instance to the MongoDB on the virtual machine.
+
+2. **Creating Data Backup**:
+   - Perform a complete synchronization of all products from MongoDB to Google Cloud Storage as a backup.
+
+3. **Designing BigQuery Data Warehouse**:
+   - Architect the schema and structure within BigQuery to accommodate Tiki's product dataset.
+
+4. **Developing Data Mart**:
+   - Construct a data mart focused on sellers and their products, intended for the Data Analysis (DA) team.
+
+5. **Connecting to Data Studio**:
+   - Establish a connection between BigQuery and Data Studio.
+   - Create a dashboard displaying key insights:
+     - Total products sold across major categories.
+     - Distribution of products from Chinese brands across categories.
+     - Correlation between product ratings and prices.
+     - Top 10 sellers and their listed products' quantities.
+
 ## Implementation Steps
-1. Set up a Compute Engine instance with MongoDB installed.
-2. Restore Tiki product data from a local MongoDB instance to the MongoDB on the VM.
-3. Perform a full data synchronization to Google Cloud Storage for backup purposes.
-4. Design the schema and structure for the Data Warehouse in BigQuery.
-5. Develop the data mart for sellers and their products.
-6. connect BigQuery to Data Studio and create a dashboard with the specified insights.
-For detailed instructions and code examples, please refer to the code files in this repository.
-## Note
-This project is focused on synchronizing Tiki product data to Google Cloud’s Data Warehouse using BigQuery and visualizing insights through Data Studio dashboards. It involves various technical aspects, including Compute Engine setup, MongoDB management, ETL processes, and data visualization.
 
+Follow these steps to successfully execute the project:
 
+1. **Setting up Compute Engine and MongoDB**:
+   - Configure a Compute Engine instance and install MongoDB.
+   
+2. **Restoring Data**:
+   - Migrate Tiki's product data from a local MongoDB instance to the MongoDB on the Compute Engine VM.
+
+3. **Data Synchronization**:
+   - Synchronize data to Google Cloud Storage for robust backup.
+
+4. **Designing BigQuery Schema**:
+   - Plan and implement an effective schema in BigQuery for Tiki's product data.
+
+5. **Developing Data Mart**:
+   - Build a specialized data mart centered around sellers and their products.
+
+6. **Creating Data Studio Dashboard**:
+   - Establish a seamless connection between BigQuery and Data Studio.
+   - Design a dashboard with insightful visualizations.
+
+For detailed instructions and code examples, refer to the provided code files.
+
+## Important Note
+
+This project focuses on synchronizing Tiki's product data with Google Cloud's Data Warehouse using BigQuery. It encompasses various technical aspects such as Compute Engine setup, MongoDB management, ETL processes, and data visualization. The project aims to empower data analysis and facilitate informed decision-making.
