@@ -24,9 +24,19 @@ The main objective of this project is to seamlessly synchronize Tiki's entire pr
    - Create a dashboard displaying key insights:
      - Total products sold across major categories.
        ![alt](https://github.com/congtranquoc/Tiki-GCP/blob/57fd9e6fb04f062370eac0b8cf2a5f9adb577cb3/images/top-categories.PNG)
+  
+     - Total china products has been sold:
+       ![alt](https://github.com/congtranquoc/Tiki-GCP/blob/2c243b39e5603ce5443a6ea5f3b6b3df69a3a08f/images/top-china-products.PNG)
+            
      - Distribution of products from Chinese brands across categories.
+       ![alt](https://github.com/congtranquoc/Tiki-GCP/blob/2c243b39e5603ce5443a6ea5f3b6b3df69a3a08f/images/distribution.PNG)
+       
      - Correlation between product ratings and prices.
      - Top 10 sellers and their listed products' quantities.
+       ![alt](https://github.com/congtranquoc/Tiki-GCP/blob/2c243b39e5603ce5443a6ea5f3b6b3df69a3a08f/images/top-sellers.PNG)
+
+
+
 
 ## Implementation Steps
 
