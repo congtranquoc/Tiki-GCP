@@ -353,9 +353,11 @@ The main objective of this project is to seamlessly synchronize Tiki's entire pr
 
 7. **Schedule data push from MongoDB to GCS using Crontab:**
    - From VM, open `crontab`.
-     `crontab -e`   
+     
+     `crontab -e`
+     
    - Schedule data push at 8:00 pm every day.
-     `0 20 * * * /home/username/script.py --out /tmp/tiki-products.json && gsutil cp -r /path/to/backup_folder gs://tiki-bucket/`
+     
      `0 20 * * * /usr/bin/python3 /home/username/crontab-file/script.py`
 
 
