@@ -8,7 +8,7 @@ The main objective of this project is to seamlessly synchronize Tiki's entire pr
 
 1. **Setting up Compute Engine and MongoDB**:
    - Create a Compute Engine instance and install MongoDB.
-     ```bash
+   ```bash
      gcloud compute instances create tiki-instance \
     --zone=asia-east2-a \
     --image-family=ubuntu-2004-lts \
